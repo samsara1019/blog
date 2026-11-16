@@ -3,13 +3,8 @@ interface Props {
 	date: Date;
 }
 
-const { date } = Astro.props;
+// 커밋 로그처럼 2026-11-16 형식으로 통일한다.
+const iso = Astro.props.date.toISOString().slice(0, 10);
 ---
 
-<time datetime={date.toISOString()}>
-	{date.toLocaleDateString('en-us', {
-		year: 'numeric',
-		month: 'short',
-		day: 'numeric',
-	})}
-</time>
+<time datetime={iso}>{iso}</time>

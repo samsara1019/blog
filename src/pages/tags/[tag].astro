@@ -1,0 +1,28 @@
+---
+import PostList from '../../components/PostList.astro';
+import { SITE_TITLE } from '../../consts';
+import Base from '../../layouts/Base.astro';
+import { getBlog, getTil } from '../../lib/posts';
+
+export async function getStaticPaths() {
+	const posts = [...(await getBlog()), ...(await getTil())].sort(
+		(a, b) => b.pubDate.valueOf() - a.pubDate.valueOf(),
+	);
+	const tags = [...new Set(posts.flatMap((p) => p.tags))];
+	return tags.map((tag) => ({
+		params: { tag },
+		props: { posts: posts.filter((p) => p.tags.includes(tag)) },
+	}));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<Base title={`#${tag} | ${SITE_TITLE}`} description={`${tag} 태그가 붙은 글`}>
+	<div class="page-head">
+		<h1>#{tag}</h1>
+		<p>이 태그가 붙은 글과 TIL {posts.length}개</p>
+	</div>
+	<PostList posts={posts} />
+</Base>

@@ -1,0 +1,31 @@
+---
+import { SITE_TITLE } from '../consts';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title={`검색 | ${SITE_TITLE}`} description="글과 TIL 검색">
+	<!-- /pagefind/* 는 `npm run build` 때 생성되고 public/pagefind 로 복사된다. dev 서버는 마지막 빌드의 색인을 쓴다. -->
+	<Fragment slot="head">
+		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+		<script is:inline src="/pagefind/pagefind-ui.js"></script>
+	</Fragment>
+	<div class="page-head">
+		<h1>검색</h1>
+	</div>
+	<div id="search"></div>
+	<script is:inline>
+		if (window.PagefindUI) {
+			const ui = new PagefindUI({
+				element: '#search',
+				showSubResults: true,
+				showImages: false,
+				translations: { placeholder: '검색' },
+			});
+			const q = new URLSearchParams(location.search).get('q');
+			if (q) ui.triggerSearch(q);
+		} else {
+			document.getElementById('search').textContent =
+				'검색 색인이 없습니다. npm run build 를 한 번 실행한 뒤 새로고침하세요.';
+		}
+	</script>
+</Base>

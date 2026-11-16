@@ -1,0 +1,19 @@
+---
+import PostList from '../../components/PostList.astro';
+import TagFilter from '../../components/TagFilter.astro';
+import { SITE_TITLE } from '../../consts';
+import Base from '../../layouts/Base.astro';
+import { getTil } from '../../lib/posts';
+
+const posts = await getTil();
+---
+
+<Base title={`TIL | ${SITE_TITLE}`} description="오늘 배운 것을 적은 짧은 메모">
+	<div class="page-head">
+		<h1>TIL</h1>
+		<p>오늘 배운 것을 적은 짧은 메모 {posts.length}개</p>
+	</div>
+	<TagFilter posts={posts}>
+		<PostList posts={posts} />
+	</TagFilter>
+</Base>

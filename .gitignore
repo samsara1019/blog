@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# search index copied from dist so `astro dev` can serve it
+public/pagefind/

@@ -1,0 +1,91 @@
+---
+// 목록 오른쪽에 태그를 모아 보여주고, 누르면 그 태그의 글만 남긴다.
+// 선택한 태그는 주소의 ?tag= 에 남아서 링크로 공유할 수 있다.
+interface Props {
+	posts: { tags: string[] }[];
+}
+
+const counts = new Map<string, number>();
+for (const tag of Astro.props.posts.flatMap((p) => p.tags)) {
+	counts.set(tag, (counts.get(tag) ?? 0) + 1);
+}
+const tags = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+---
+
+<div class="with-tags" data-tag-filter>
+	{
+		tags.length > 0 && (
+			<aside aria-label="태그">
+				{tags.map(([tag, count]) => (
+					<button type="button" data-tag={tag} aria-pressed="false">
+						#{tag} <span>{count}</span>
+					</button>
+				))}
+			</aside>
+		)
+	}
+	<slot />
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-tag-filter]').forEach((root) => {
+		const buttons = root.querySelectorAll<HTMLButtonElement>('button[data-tag]');
+		const apply = (tag: string) => {
+			buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tag === tag)));
+			root.querySelectorAll<HTMLElement>('li[data-tags]').forEach((li) => {
+				li.hidden = !!tag && !JSON.parse(li.dataset.tags!).includes(tag);
+			});
+			const url = new URL(location.href);
+			if (tag) url.searchParams.set('tag', tag);
+			else url.searchParams.delete('tag');
+			history.replaceState(null, '', url);
+		};
+		buttons.forEach((b) =>
+			b.addEventListener('click', () =>
+				apply(b.getAttribute('aria-pressed') === 'true' ? '' : b.dataset.tag!),
+			),
+		);
+		apply(new URLSearchParams(location.search).get('tag') ?? '');
+	});
+</script>
+
+<style>
+	.with-tags {
+		position: relative;
+	}
+	aside {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 16px;
+		margin-bottom: 24px;
+	}
+	button {
+		padding: 4px 0;
+		border: none;
+		background: none;
+		font-family: var(--mono);
+		font-size: 13px;
+		color: var(--text-2);
+		text-align: left;
+		cursor: pointer;
+		transition: color 150ms var(--ease);
+	}
+	button span {
+		color: var(--text-3);
+	}
+	button:hover,
+	button[aria-pressed='true'] {
+		color: var(--accent);
+	}
+	/* 넓은 화면에서는 읽는 단을 그대로 두고 오른쪽 바깥에 세로로 둔다. */
+	@media (min-width: 1100px) {
+		aside {
+			position: absolute;
+			top: 8px;
+			left: 100%;
+			flex-direction: column;
+			width: 160px;
+			margin: 0 0 0 48px;
+		}
+	}
+</style>

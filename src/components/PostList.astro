@@ -1,0 +1,50 @@
+---
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	posts: { href: string; title: string; pubDate: Date; description?: string; tags?: string[] }[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul>
+	{
+		posts.map((post) => (
+			<li data-tags={JSON.stringify(post.tags ?? [])}>
+				<FormattedDate date={post.pubDate} />
+				<a href={post.href}>
+					<span class="title">{post.title}</span>
+					{post.description && <span class="desc">{post.description}</span>}
+				</a>
+			</li>
+		))
+	}
+</ul>
+<style>
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	li {
+		display: grid;
+		grid-template-columns: 88px 1fr;
+		gap: 16px;
+		align-items: baseline;
+		padding: 8px 0;
+	}
+	li[hidden] {
+		display: none;
+	}
+	.title {
+		display: block;
+		font-weight: 500;
+	}
+	.desc {
+		display: block;
+		margin-top: 4px;
+		font-size: 14px;
+		color: var(--text-2);
+	}
+</style>
