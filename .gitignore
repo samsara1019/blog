@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # search index copied from dist so `astro dev` can serve it
 public/pagefind/
+
+# unslop skill checkout (separate repo)
+unslop/
