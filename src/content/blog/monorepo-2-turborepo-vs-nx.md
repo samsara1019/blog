@@ -1,5 +1,5 @@
 ---
-title: 'Nx가 아니라 Turborepo를 고른 이유'
+title: '모노레포 2편. Nx가 아니라 Turborepo를 고른 이유'
 description: '앱 6개 규모에서 Nx의 정밀함이 왜 필요 없었는지, 언제 다시 볼 것인지.'
 tags: ['모노레포', 'turborepo', 'nx']
 pubDate: 2026-11-16T00:04:00Z

@@ -1,5 +1,5 @@
 ---
-title: 'Dockerfile 하나로 모든 앱을 빌드하기'
+title: '모노레포 4편. Dockerfile 하나로 모든 앱을 빌드하기'
 description: '바뀐 앱만 빌드하는 구조, 캐시 4계층, 2.2GB를 덜어낸 런타임 이미지, 그리고 실제로 나아진 것.'
 tags: ['모노레포', 'turborepo', 'docker', 'ci']
 pubDate: 2026-11-16T00:02:00Z

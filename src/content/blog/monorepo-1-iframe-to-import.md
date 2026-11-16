@@ -1,5 +1,5 @@
 ---
-title: 'iframe으로 공유하던 화면을 import로 바꾸기까지'
+title: '모노레포 1편. iframe으로 공유하던 화면을 import로 바꾸기까지'
 description: '두 앱이 같은 화면을 iframe으로 나눠 쓰던 구조의 한계와, 모노레포로 옮기기로 한 이유.'
 tags: ['모노레포', 'iframe', '아키텍처']
 pubDate: 2026-11-16T00:05:00Z
