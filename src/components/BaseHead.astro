@@ -16,18 +16,17 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = FallbackImage } = Astro.props;
-// .env에 PUBLIC_GA_ID=G-XXXX 를 넣으면 GA4가 켜진다.
-const gaId = import.meta.env.PUBLIC_GA_ID;
 ---
 
+{/* Google Tag Manager. 로컬 dev 방문은 세지 않도록 배포 빌드에만 넣는다. */}
 {
-	gaId && (
+	import.meta.env.PROD && (
 		<>
-			<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
-			<script is:inline define:vars={{ gaId }}>
-				window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); }
-				gtag('js', new Date()); gtag('config', gaId);
+			<script is:inline>
+				window.dataLayer = window.dataLayer || [];
+				window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
 			</script>
+			<script is:inline async src="https://www.googletagmanager.com/gtm.js?id=GTM-NFN8T6KB" />
 		</>
 	)
 }
